@@ -29,4 +29,14 @@ jobs:
     steps:
     # Runs a single command using the runners shell
     - name: Send greeting
-      run: echo "Hello ${{ inputs.name }}"
+      run: |
+        curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: token ${{ secrets.AUTODN_RELEASE_TOKEN }}" \
+            https://api.github.com/repos/AuTsing/Auto.dn-release/dispatches \
+            -d '{
+              "event_type": "auto-generate-release",
+              "client_payload": {
+                "tag": "v1.8.2"
+              }
+            }'
